@@ -1,5 +1,7 @@
 # Databricks MCP servers
 
+![Test Status](https://github.com/databrickslabs/mcp/actions/workflows/unit_tests.yml/badge.svg)
+
 ## Overview
 An experimental collection of [MCP](https://modelcontextprotocol.io/introduction) servers to help AI agents fetch enterprise data from Databricks, automate common developer actions on Databricks, etc:
 
@@ -8,9 +10,8 @@ An experimental collection of [MCP](https://modelcontextprotocol.io/introduction
 * ![status: Under construction](https://img.shields.io/badge/status-Under_construction-red?style=flat-square&logo=databricks)
   [Databricks developer tools server](./servers/developer_tools/README.md): Perform common developer actions in Databricks, like creating and updating notebooks, running jobs, etc. This server is not yet usable, but contributions are welcome!
 
-The set of servers in this repo is fluid and will evolve over time. We welcome contributions to this repo, including updates to existing tools, new tools for existing servers, and new servers - please first
-read the [contributor guidelines](CONTRIBUTING.md) to streamline the process and ensure your contribution has the
-best change of being accepted :)
+The set of servers and tools in this repo is fluid and will evolve over time. We welcome contributions to this repo - please first
+read the [contributor guidelines](CONTRIBUTING.md) to streamline the process and discover areas where help is needed.
 
 ## Usage
 See the `README.md` in each server's directory for detailed instructions.
