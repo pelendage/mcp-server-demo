@@ -28,6 +28,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
+          cache: 'pip'
+          cache-dependency-path: '**/pyproject.toml'
           python-version: "3.12"
 
       - name: Install uv
@@ -51,6 +53,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
+          cache: 'pip'
+          cache-dependency-path: '**/pyproject.toml'
           python-version: "3.12"
 
       - name: Install uv
