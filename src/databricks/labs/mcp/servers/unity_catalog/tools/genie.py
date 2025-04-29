@@ -9,7 +9,7 @@ from pydantic.json import pydantic_encoder
 from databricks.sdk import WorkspaceClient
 from mcp.types import TextContent, Tool as ToolSpec
 
-from unitycatalog_mcp.tools.base_tool import BaseTool
+from databricks.labs.mcp.servers.unity_catalog.tools.base_tool import BaseTool
 
 # Logger
 LOGGER = logging.getLogger(__name__)

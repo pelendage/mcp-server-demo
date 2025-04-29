@@ -1,7 +1,10 @@
 from unittest import mock
 
 import pytest
-from unitycatalog_mcp.tools.functions import list_uc_function_tools, UCFunctionTool
+from databricks.labs.mcp.servers.unity_catalog.tools.functions import (
+    list_uc_function_tools,
+    UCFunctionTool,
+)
 
 SCHEMA_FULL_NAME = "catalog.schema"
 

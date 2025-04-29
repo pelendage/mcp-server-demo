@@ -1,5 +1,5 @@
 from unittest import mock
-from unitycatalog_mcp.tools.vector_search import (
+from databricks.labs.mcp.servers.unity_catalog.tools.vector_search import (
     _list_vector_search_tools,
     list_vector_search_tools,
     VectorSearchTool,

@@ -1,5 +1,9 @@
 from pydantic import BaseModel
-from unitycatalog_mcp.tools.genie import list_genie_tools, GenieTool, dump_json
+from databricks.labs.mcp.servers.unity_catalog.tools.genie import (
+    list_genie_tools,
+    GenieTool,
+    dump_json,
+)
 from unittest import mock
 
 

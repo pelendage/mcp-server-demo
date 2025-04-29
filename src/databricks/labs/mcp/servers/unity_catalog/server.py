@@ -4,15 +4,15 @@ import collections
 from mcp.server import NotificationOptions, Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool as ToolSpec
-from unitycatalog_mcp.tools import (
+from databricks.labs.mcp.servers.unity_catalog.tools import (
     list_all_tools,
     Content,
 )
 
-from unitycatalog_mcp.cli import get_settings
+from databricks.labs.mcp.servers.unity_catalog.cli import get_settings
 
-from unitycatalog_mcp.tools.base_tool import BaseTool
-from unitycatalog_mcp.version import VERSION
+from databricks.labs.mcp.servers.unity_catalog.tools.base_tool import BaseTool
+from databricks.labs.mcp._version import __version__ as VERSION
 
 # The logger instance for this module.
 LOGGER = logging.getLogger(__name__)
