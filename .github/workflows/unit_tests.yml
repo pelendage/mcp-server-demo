@@ -25,19 +25,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          cache: 'pip'
-          cache-dependency-path: '**/pyproject.toml'
-          python-version: "3.12"
-
-      - name: Install uv
+      - name: Install uv and set the python version
         uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      - name: Install dependencies with uv
-        run: |
-          uv sync 
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
 
       - name: Run tests
         run: uv run pytest tests
@@ -50,17 +46,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
         with:
-          cache: 'pip'
-          cache-dependency-path: '**/pyproject.toml'
           python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
-      - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      - name: Install the project
+        run: uv sync --locked --all-extras --dev
 
       - name: Run lint checks
         run: make lint
