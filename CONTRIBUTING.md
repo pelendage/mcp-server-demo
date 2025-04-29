@@ -10,11 +10,10 @@ before sending a pull request. For smaller changes (e.g. fixing a bug, adding a 
 
 ### Running tests
 
-First, install test requirements from within the directory of the server you're working on:
+First, install all requirements from within the directory of the server you're working on:
 
 ```bash
 uv sync
-uv pip install --group dev
 ```
 
 To run tests:
@@ -25,7 +24,8 @@ uv run pytest tests
 
 To run and fix lint errors, run the following from the repo root directory:
 ```bash
-./dev/lint.sh --fix
+make fmt # to format code
+make lint # to run linters
 ```
 
 ### Guidelines for MCP servers
