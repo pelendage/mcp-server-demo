@@ -1,9 +1,7 @@
 fmt:
-	uv run isort .
 	uv run black .
 	uv run ruff check . --fix
 
-verify:
-	uv run isort . --check
+lint:
 	uv run black . --check
 	uv run ruff check .

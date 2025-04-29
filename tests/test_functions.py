@@ -54,9 +54,13 @@ class DummySettings:
 
 
 @mock.patch(
-    "databricks.labs.mcp.servers.unity_catalog.tools.functions.DatabricksFunctionClient", new=DummyClient
+    "databricks.labs.mcp.servers.unity_catalog.tools.functions.DatabricksFunctionClient",
+    new=DummyClient,
 )
-@mock.patch("databricks.labs.mcp.servers.unity_catalog.tools.functions.UCFunctionToolkit", new=DummyToolkit)
+@mock.patch(
+    "databricks.labs.mcp.servers.unity_catalog.tools.functions.UCFunctionToolkit",
+    new=DummyToolkit,
+)
 def test_list_uc_function_tools():
     settings = DummySettings()
     tools = list_uc_function_tools(settings)

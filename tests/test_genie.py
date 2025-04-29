@@ -63,7 +63,10 @@ class DummyWorkspaceClient:
     pass
 
 
-@mock.patch("databricks.labs.mcp.servers.unity_catalog.tools.genie.WorkspaceClient", new=DummyWorkspaceClient)
+@mock.patch(
+    "databricks.labs.mcp.servers.unity_catalog.tools.genie.WorkspaceClient",
+    new=DummyWorkspaceClient,
+)
 def test_genie_tool_execute():
     mock_func = mock.Mock()
     mock_func.return_value = [mock.Mock(text="hello world")]

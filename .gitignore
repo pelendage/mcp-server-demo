@@ -123,3 +123,5 @@ gunicorn.conf.py
 
 # ignore version file
 src/databricks/labs/mcp/_version.py
+
+.ruff_cache/

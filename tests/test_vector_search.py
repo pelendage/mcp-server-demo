@@ -32,9 +32,12 @@ class DummySettings:
 
 
 @mock.patch(
-    "databricks.labs.mcp.servers.unity_catalog.tools.vector_search.WorkspaceClient", new=DummyWorkspaceClient
+    "databricks.labs.mcp.servers.unity_catalog.tools.vector_search.WorkspaceClient",
+    new=DummyWorkspaceClient,
 )
-@mock.patch("databricks.labs.mcp.servers.unity_catalog.tools.vector_search.VectorSearchRetrieverTool")
+@mock.patch(
+    "databricks.labs.mcp.servers.unity_catalog.tools.vector_search.VectorSearchRetrieverTool"
+)
 def test_list_vector_search_tools_filters_and_returns_expected(
     MockVectorSearchRetrieverTool,
 ):
