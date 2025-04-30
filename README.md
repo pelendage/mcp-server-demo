@@ -2,25 +2,45 @@
 
 ![Test Status](https://github.com/databrickslabs/mcp/actions/workflows/unit_tests.yml/badge.svg)
 
+Table of Contents
+=================
+
+- [Databricks MCP servers](#databricks-mcp-servers)
+- [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Unity Catalog Server](#unity-catalog-server)
+    - [Overview](#overview-1)
+    - [Usage](#usage)
+    - [Supported tools](#supported-tools)
+  - [Developer Tools Server](#developer-tools-server)
+  - [Support](#support)
+  - [Contributing](#contributing)
+
 ## Overview
 An experimental collection of [MCP](https://modelcontextprotocol.io/introduction) servers to help AI agents fetch enterprise data from Databricks, automate common developer actions on Databricks, etc:
 
 * ![status: Beta](https://img.shields.io/badge/status-Beta-yellow?style=flat-square&logo=databricks)
   [Databricks Unity Catalog server](./servers/unity_catalog/README.md): Fetch data and run tools registered in from Unity Catalog, making agents aware of your enterprise data
 * ![status: Under construction](https://img.shields.io/badge/status-Under_construction-red?style=flat-square&logo=databricks)
-  [Databricks developer tools server](./servers/developer_tools/README.md): Perform common developer actions in Databricks, like creating and updating notebooks, running jobs, etc. This server is not yet usable, but contributions are welcome!
+  [Databricks developer tools server](): Perform common developer actions in Databricks, like creating and updating notebooks, running jobs, etc. This server is not yet usable, but contributions are welcome!
 
 The set of servers and tools in this repo is fluid and will evolve over time. We welcome contributions to this repo - please first
 read the [contributor guidelines](CONTRIBUTING.md) to streamline the process and discover areas where help is needed.
 
-## Usage
-See the `README.md` in each server's directory for detailed instructions.
-For most servers, the following steps work: 
+## Unity Catalog Server
 
+![status: Beta](https://img.shields.io/badge/status-Beta-yellow?style=flat-square&logo=databricks)
+
+### Overview
+A Model Context Protocol server that exposes structured and unstructured data in Unity Catalog ([vector search indexes](https://docs.databricks.com/gcp/en/generative-ai/vector-search), [functions](https://docs.databricks.com/aws/en/generative-ai/agent-framework/create-custom-tool), and [Genie spaces](https://docs.databricks.com/aws/en/genie/)), as tools.
+
+<img src="docs/images/demo.png" alt="Demo image" height="400px">
+
+### Usage
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 1. Install Python using `uv python install 3.12`
 1. [Configure Databricks credentials](https://docs.databricks.com/aws/en/dev-tools/cli/authentication) with access to the required APIs
-1. Add the server to your MCP client configuration. For example, to use the Databricks Unity Catalog MCP server with Claude Desktop, add the following to your `claude_desktop_config.json`:
+1. Add the server to your MCP client configuration. For example, to use this server with Claude Desktop, add the following to your `claude_desktop_config.json`:
 
 ```json
 {
@@ -29,7 +49,7 @@ For most servers, the following steps work:
       "command": "/path/to/uv/executable/uv",
       "args": [
         "--directory",
-        "/path/to/this/repo/servers/unity_catalog",
+        "/path/to/this/repo",
         "run",
         "unitycatalog-mcp",
         "-s",
@@ -41,6 +61,20 @@ For most servers, the following steps work:
   }
 }
 ```
+
+### Supported tools
+
+The list of tools supported by this server is dynamically inferred at startup time based on the functions and vector search indexes
+within the specified Unity Catalog schema, as well as any specified Genie spaces. In particular, the server exposes
+the following tools:
+
+* **UC Functions**: for each UC function, the server exposes a tool with the same name, arguments, and return type as the function
+* **Vector search indexes**: for each vector search index, the server exposes a tool for querying that vector search index
+* **Genie spaces**: for each Genie space, the server exposes tools for managing conversations and sending questions to the space
+
+## Developer Tools Server
+
+This server is currently under construction. It is not yet usable, but contributions are welcome!
 
 ## Support
 Please note that all projects in the `databrickslabs` GitHub organization are provided for your exploration only, and are not formally supported by Databricks with Service Level Agreements (SLAs).  They are provided AS-IS and we do not make any guarantees of any kind.  Please do not submit a support ticket relating to any issues arising from the use of these projects.

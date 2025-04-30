@@ -2,7 +2,7 @@ import sys
 import pytest
 from pydantic import ValidationError
 from unittest.mock import patch
-from unitycatalog_mcp.cli import get_settings
+from databricks.labs.mcp.servers.unity_catalog.cli import get_settings
 
 
 @pytest.mark.parametrize(

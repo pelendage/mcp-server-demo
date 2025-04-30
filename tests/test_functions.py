@@ -1,7 +1,10 @@
 from unittest import mock
 
 import pytest
-from unitycatalog_mcp.tools.functions import list_uc_function_tools, UCFunctionTool
+from databricks.labs.mcp.servers.unity_catalog.tools.functions import (
+    list_uc_function_tools,
+    UCFunctionTool,
+)
 
 SCHEMA_FULL_NAME = "catalog.schema"
 
@@ -51,9 +54,13 @@ class DummySettings:
 
 
 @mock.patch(
-    "unitycatalog_mcp.tools.functions.DatabricksFunctionClient", new=DummyClient
+    "databricks.labs.mcp.servers.unity_catalog.tools.functions.DatabricksFunctionClient",
+    new=DummyClient,
 )
-@mock.patch("unitycatalog_mcp.tools.functions.UCFunctionToolkit", new=DummyToolkit)
+@mock.patch(
+    "databricks.labs.mcp.servers.unity_catalog.tools.functions.UCFunctionToolkit",
+    new=DummyToolkit,
+)
 def test_list_uc_function_tools():
     settings = DummySettings()
     tools = list_uc_function_tools(settings)

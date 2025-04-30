@@ -1,5 +1,5 @@
 from unittest import mock
-from unitycatalog_mcp.tools.vector_search import (
+from databricks.labs.mcp.servers.unity_catalog.tools.vector_search import (
     _list_vector_search_tools,
     list_vector_search_tools,
     VectorSearchTool,
@@ -32,9 +32,12 @@ class DummySettings:
 
 
 @mock.patch(
-    "unitycatalog_mcp.tools.vector_search.WorkspaceClient", new=DummyWorkspaceClient
+    "databricks.labs.mcp.servers.unity_catalog.tools.vector_search.WorkspaceClient",
+    new=DummyWorkspaceClient,
 )
-@mock.patch("unitycatalog_mcp.tools.vector_search.VectorSearchRetrieverTool")
+@mock.patch(
+    "databricks.labs.mcp.servers.unity_catalog.tools.vector_search.VectorSearchRetrieverTool"
+)
 def test_list_vector_search_tools_filters_and_returns_expected(
     MockVectorSearchRetrieverTool,
 ):
@@ -52,7 +55,7 @@ def test_list_vector_search_tools_filters_and_returns_expected(
 
 def test_internal_list_vector_search_tools_direct():
     with mock.patch(
-        "unitycatalog_mcp.tools.vector_search.VectorSearchRetrieverTool"
+        "databricks.labs.mcp.servers.unity_catalog.tools.vector_search.VectorSearchRetrieverTool"
     ) as MockVectorSearchRetrieverTool:
         MockVectorSearchRetrieverTool.side_effect = lambda index_name: mock.Mock(
             tool={
