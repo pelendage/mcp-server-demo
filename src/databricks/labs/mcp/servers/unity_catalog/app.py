@@ -34,4 +34,7 @@ app = FastAPI(
     lifespan=lambda _: mcp.session_manager.run(),
 )
 
-app.mount("/api", mcp.streamable_http_app())
+streamable_app = mcp.streamable_http_app()
+streamable_app.router.redirect_slashes = False  # so both /api/mcp and /api/mcp/ work
+
+app.mount("/api", streamable_app)
