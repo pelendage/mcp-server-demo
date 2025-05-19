@@ -110,7 +110,8 @@ class InMemoryEventStore(EventStore):
         return stream_id
 
 
-async def get_serveable_app(app: Server, json_response: bool = True) -> Starlette:
+def get_serveable_app(app: Server, json_response: bool = True) -> Starlette:
+    logger.info("Creating MCP app...")
 
     event_store = InMemoryEventStore()
 
@@ -137,6 +138,7 @@ async def get_serveable_app(app: Server, json_response: bool = True) -> Starlett
             finally:
                 logger.info("Application shutting down...")
 
+    logger.info("MCP app created successfully!")
     # Create an ASGI application using the transport
     return Starlette(
         debug=True,

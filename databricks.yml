@@ -11,6 +11,15 @@ artifacts:
     path: .
     build: uv build --wheel
 
+variables
+  schema_full_name:
+    type: string
+    description: Full name of the schema to use (e.g. main.default)
+
+  genie_space_ids:
+    type: string
+    description: JSON-formatted list of Genie space IDs to use (e.g. '["space1", "space2"]')
+
 resources:
   apps:
     mcp-on-apps:
@@ -18,7 +27,14 @@ resources:
       description: "MCP Server on Databricks Apps"
       source_code_path: ./.build
       config:
-        command: ["unitycatalog-mcp-app"]
+        command:
+          ["uvicorn", "databricks.labs.mcp.servers.unity_catalog.app:app"]
+        
+        env:
+          - name: "SCHEMA_FULL_NAME"
+            value: ${var.schema_full_name}
+          - name: "GENIE_SPACE_IDS"
+            value: ${var.genie_space_ids}
 
 targets:
   dev:

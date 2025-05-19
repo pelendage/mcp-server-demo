@@ -89,15 +89,21 @@ cd /path/to/this/repo
 
 2. Push app code to Databricks:
 ```bash
-databricks bundle deploy -p <name-of-your-profile>
+databricks bundle deploy -p <name-of-your-profile> \
+  --var "schema_full_name=<your_catalog>.<your_schema>" \
+  --var 'genie_space_ids=["spaceId1","spaceId2"]' \
 ```
 
 3. Deploy the app:
 ```bash
-databricks bundle run mcp-on-apps -p <name-of-your-profile>
+databricks bundle run mcp-on-apps -p <name-of-your-profile> \
+  --var "schema_full_name=<your_catalog>.<your_schema>" \
+  --var 'genie_space_ids=["spaceId1","spaceId2"]' \
 ```
 
 If you are a developer iterating on the server implementation, you can repeat steps #2 and #3 to push your latest modifications to the server to your Databricks app.
+
+Please note that both variables should be provided in both `deploy` and `run` commands. The `schema_full_name` variable is used to determine the schema to use for the server, while the `genie_space_ids` variable is used to determine which Genie spaces to use. 
 
 ## Support
 Please note that all projects in the `databrickslabs` GitHub organization are provided for your exploration only, and are not formally supported by Databricks with Service Level Agreements (SLAs).  They are provided AS-IS and we do not make any guarantees of any kind.  Please do not submit a support ticket relating to any issues arising from the use of these projects.

@@ -14,6 +14,8 @@ class CliSettings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         cli_parse_args=True,
+        cli_ignore_unknown_args=True,
+        extra="ignore",
     )
 
     schema_full_name: Optional[str] = Field(
