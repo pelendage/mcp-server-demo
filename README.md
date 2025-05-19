@@ -87,19 +87,32 @@ You can deploy the Unity Catalog MCP server as a Databricks app. To do so, follo
 cd /path/to/this/repo
 ```
 
-2. Push app code to Databricks:
+1. Set the env variables for the `schema_full_name` and `genie_space_ids` and run the `bundle deploy` command:
 ```bash
-databricks bundle deploy -p <name-of-your-profile> \
-  --var "schema_full_name=<your_catalog>.<your_schema>" \
-  --var 'genie_space_ids=["spaceId1","spaceId2"]' \
+BUNDLE_VAR_schema_full_name=catalog.schema BUNDLE_VAR_genie_space_ids=[\"space1\",\"space2\"] \
+  databricks bundle deploy -p your-profile-name
 ```
 
-3. Deploy the app:
+2. Deploy the app:
 ```bash
-databricks bundle run mcp-on-apps -p <name-of-your-profile> \
-  --var "schema_full_name=<your_catalog>.<your_schema>" \
-  --var 'genie_space_ids=["spaceId1","spaceId2"]' \
+BUNDLE_VAR_schema_full_name=catalog.schema BUNDLE_VAR_genie_space_ids=[\"space1\",\"space2\"] \
+  databricks bundle run mcp-on-apps -p your-profile-name
 ```
+
+Please note that `BUNDLE_VAR_genie_space_ids` should be exactly as shown above, with the double quotes escaped, no spaces, and the brackets included.
+
+To connect to your app, use the `Streamable HTTP` transport with the following URL:
+```
+https://your-app-url.usually.ends.with.databricksapps.com/api/mcp/
+```
+
+Please note the trailing `/api/mcp/` in the URL. This is required for the server to work correctly,including the trailing slash.
+
+You'll also need to set the `Authorization` header to `Bearer <your_token>` in your client. You can get the token by running the following command:
+```bash
+databricks auth token -p your-profile-name
+```
+
 
 If you are a developer iterating on the server implementation, you can repeat steps #2 and #3 to push your latest modifications to the server to your Databricks app.
 
