@@ -1,22 +1,15 @@
 from fastapi import FastAPI
 from mcp.server import Server
-from mcp.types import Tool as ToolSpec
-from databricks.labs.mcp.base import get_serveable_app
-from databricks.labs.mcp.servers.unity_catalog.tools import (
-    Content,
-)
 from databricks.labs.mcp.servers.unity_catalog.cli import get_settings
 
 from databricks.labs.mcp._version import __version__ as VERSION
 from databricks.labs.mcp.servers.unity_catalog.server import get_tools_dict
 from databricks.labs.mcp.servers.unity_catalog.tools.base_tool import BaseTool
-
+from mcp.server.fastmcp import FastMCP
 
 mcp_server = Server(name="mcp-unitycatalog", version=VERSION)
 tools_dict: dict[str, BaseTool] = get_tools_dict(settings=get_settings())
 
-
-from mcp.server.fastmcp import FastMCP
 
 mcp = FastMCP(
     name="mcp-unitycatalog",
