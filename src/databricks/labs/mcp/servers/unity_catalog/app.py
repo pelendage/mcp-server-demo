@@ -1,6 +1,5 @@
 from mcp.server import Server
 from mcp.types import Tool as ToolSpec
-import uvicorn
 from databricks.labs.mcp.base import get_serveable_app
 from databricks.labs.mcp.servers.unity_catalog.tools import (
     Content,
