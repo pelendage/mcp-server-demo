@@ -11,7 +11,7 @@ artifacts:
     path: .
     build: uv build --wheel
 
-variables
+variables:
   schema_full_name:
     type: string
     description: Full name of the schema to use (e.g. main.default)

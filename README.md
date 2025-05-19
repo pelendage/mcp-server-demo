@@ -91,7 +91,7 @@ cd /path/to/this/repo
 ```bash
 databricks bundle deploy -p <name-of-your-profile> \
   --var "schema_full_name=<your_catalog>.<your_schema>" \
-  --var 'genie_space_ids=["spaceId1","spaceId2"]' \
+  --var 'genie_space_ids=["spaceId1","spaceId2"]' 
 ```
 
 3. Deploy the app:

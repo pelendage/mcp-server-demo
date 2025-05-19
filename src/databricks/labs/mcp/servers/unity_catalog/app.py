@@ -1,3 +1,4 @@
+from fastapi import FastAPI
 from mcp.server import Server
 from mcp.types import Tool as ToolSpec
 from databricks.labs.mcp.base import get_serveable_app
@@ -8,21 +9,29 @@ from databricks.labs.mcp.servers.unity_catalog.cli import get_settings
 
 from databricks.labs.mcp._version import __version__ as VERSION
 from databricks.labs.mcp.servers.unity_catalog.server import get_tools_dict
+from databricks.labs.mcp.servers.unity_catalog.tools.base_tool import BaseTool
 
 
 mcp_server = Server(name="mcp-unitycatalog", version=VERSION)
-tools_dict = get_tools_dict(settings=get_settings())
+tools_dict: dict[str, BaseTool] = get_tools_dict(settings=get_settings())
 
 
-@mcp_server.list_tools()
-async def list_tools() -> list[ToolSpec]:
-    return [tool.tool_spec for tool in tools_dict.values()]
+from mcp.server.fastmcp import FastMCP
 
+mcp = FastMCP(
+    name="mcp-unitycatalog",
+)
 
-@mcp_server.call_tool()
-async def call_tool(name: str, arguments: dict) -> list[Content]:
-    tool = tools_dict[name]
-    return tool.execute(**arguments)
+for tool_name, tool in tools_dict.items():
+    mcp.add_tool(
+        tool.execute,
+        name=tool_name,
+        description=tool.tool_spec.description,
+        annotations=tool.tool_spec.annotations,
+    )
 
+app = FastAPI(
+    lifespan=lambda _: mcp.session_manager.run(),
+)
 
-app = get_serveable_app(mcp_server)
+app.mount("/api", mcp.streamable_http_app())
