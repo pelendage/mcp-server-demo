@@ -18,7 +18,8 @@ resources:
       description: "MCP Server on Databricks Apps"
       source_code_path: ./.build
       config:
-        command: ["unitycatalog-mcp-app"]
+        command:
+          ["uvicorn", "databricks.labs.mcp.servers.unity_catalog.app:app"]
 
 targets:
   dev:

@@ -11,25 +11,19 @@ from databricks.labs.mcp._version import __version__ as VERSION
 from databricks.labs.mcp.servers.unity_catalog.server import get_tools_dict
 
 
-app = Server(name="mcp-unitycatalog", version=VERSION)
+mcp_server = Server(name="mcp-unitycatalog", version=VERSION)
 tools_dict = get_tools_dict(settings=get_settings())
 
 
-@app.list_tools()
+@mcp_server.list_tools()
 async def list_tools() -> list[ToolSpec]:
     return [tool.tool_spec for tool in tools_dict.values()]
 
 
-@app.call_tool()
+@mcp_server.call_tool()
 async def call_tool(name: str, arguments: dict) -> list[Content]:
     tool = tools_dict[name]
     return tool.execute(**arguments)
 
 
-def start_app():
-    serveable = get_serveable_app(app)
-    uvicorn.run(serveable, host="0.0.0.0", port=8000)
-
-
-if __name__ == "__main__":
-    start_app()
+app = get_serveable_app(mcp_server)
