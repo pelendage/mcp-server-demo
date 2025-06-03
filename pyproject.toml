@@ -8,7 +8,7 @@ requires-python = ">=3.10"
 keywords = ["databricks", "unity catalog", "mcp", "agents", "llm", "automation", "genie"]
 
 dependencies = [
-    "mcp>=1.8.1",
+    "mcp>=1.9.2",
     "pydantic>=2.10.6",
     "pydantic-settings>=2.7.1",
     "unitycatalog-ai>=0.1.0",
@@ -25,6 +25,7 @@ dev-dependencies = [
     "pytest>=8.3.4",
     "isort>=6.0.1",
     "hatchling>=1.27.0",
+    "mcp[cli]>=1.9.2",
 ]
 
 [tool.uv.workspace]

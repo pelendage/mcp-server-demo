@@ -125,6 +125,5 @@ gunicorn.conf.py
 src/databricks/labs/mcp/_version.py
 
 .ruff_cache/
-.build/
-!.build/.gitkeep
 .databricks
+.build

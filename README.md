@@ -82,10 +82,12 @@ This server is currently under construction. It is not yet usable, but contribut
 
 You can deploy the Unity Catalog MCP server as a Databricks app. To do so, follow the instructions below:
 
-1. Move into the project directory:
+1. Move into the project directory and build the wheel:
 ```bash
 cd /path/to/this/repo
+uv build --wheel
 ```
+
 
 1. Set the env variables for the `schema_full_name` and `genie_space_ids` and run the `bundle deploy` command:
 ```bash
