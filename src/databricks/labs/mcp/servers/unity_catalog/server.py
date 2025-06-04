@@ -1,4 +1,4 @@
-from databricks.labs.mcp.servers.unity_catalog.app import get_prepared_mcp_app
+from databricks.labs.mcp.servers.unity_catalog.tools import get_prepared_mcp_app
 
 
 def start() -> None:

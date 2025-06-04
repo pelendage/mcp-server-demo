@@ -1,4 +1,7 @@
 import logging
+from pathlib import Path
+
+from fastapi.staticfiles import StaticFiles
 
 logger = logging.getLogger("databricks.labs.mcp")
 logger.setLevel(logging.INFO)
@@ -11,3 +14,7 @@ handler.setFormatter(formatter)
 
 if not logger.hasHandlers():
     logger.addHandler(handler)
+
+
+def get_app_index_route() -> StaticFiles:
+    return StaticFiles(directory=Path(__file__).parent / "static", html=True)
