@@ -1,3 +1,4 @@
+import collections
 from typing import TypeAlias, Union
 from mcp.types import (
     TextContent,
@@ -5,20 +6,58 @@ from mcp.types import (
     EmbeddedResource,
 )
 
-from databricks.labs.mcp.servers.unity_catalog.tools.genie import list_genie_tools
+from databricks.labs.mcp.servers.unity_catalog.cli import get_settings
+from databricks.labs.mcp.servers.unity_catalog.tools.genie import (
+    GenieTool,
+    list_genie_tools,
+)
 from databricks.labs.mcp.servers.unity_catalog.tools.functions import (
+    UCFunctionTool,
     list_uc_function_tools,
 )
 from databricks.labs.mcp.servers.unity_catalog.tools.vector_search import (
+    VectorSearchTool,
     list_vector_search_tools,
 )
+from databricks.labs.mcp.utils import logger
 
 Content: TypeAlias = Union[TextContent, ImageContent, EmbeddedResource]
+AvailableTool = UCFunctionTool | VectorSearchTool | GenieTool
 
 
-def list_all_tools(settings):
+def list_all_tools(settings) -> list[AvailableTool]:
+    """
+    Returns a list of all available tools, including Genie tools, UC functions, and vector search tools.
+    This function aggregates tools from different sources and returns them in a single list.
+    """
+
     return (
         list_genie_tools(settings)
         + list_vector_search_tools(settings)
         + list_uc_function_tools(settings)
     )
+
+
+def _warn_if_duplicate_tool_names(tools: list[AvailableTool]):
+    tool_names = [tool.tool_spec.name for tool in tools]
+    duplicate_tool_names = [
+        item for item, count in collections.Counter(tool_names).items() if count > 1
+    ]
+    if duplicate_tool_names:
+        logger.warning(
+            f"Duplicate tool names detected: {duplicate_tool_names}. For each duplicate tool name, "
+            f"picking one of the tools with that name. This can happen if your UC schema "
+            f"contains a function and a vector search index with the same name"
+        )
+
+
+def get_tools_dict() -> dict[str, AvailableTool]:
+    """
+    Returns a dictionary of all tools with their names as keys and tool objects as values.
+    """
+    # TODO: if LLM tool name length limits allow, dedup tool names by tool type
+    # (e.g. function name and vector search index name)
+    settings = get_settings()
+    all_tools = list_all_tools(settings=settings)
+    _warn_if_duplicate_tool_names(all_tools)
+    return {tool.tool_spec.name: tool for tool in list_all_tools(settings=settings)}

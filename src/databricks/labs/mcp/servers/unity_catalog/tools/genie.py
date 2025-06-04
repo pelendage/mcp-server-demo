@@ -78,7 +78,7 @@ class ListSpacesInput(BaseModel):
 # --- Tool Implementations ---
 
 
-def _start_conversation(client, args) -> list[TextContent]:
+def _start_conversation(client: WorkspaceClient, args) -> list[TextContent]:
     model = StartConversationInput.model_validate(args)
     message = client.genie.start_conversation_and_wait(model.space_id, model.content)
     return [
@@ -97,7 +97,7 @@ def _start_conversation(client, args) -> list[TextContent]:
     ]
 
 
-def _create_message(client, args) -> list[TextContent]:
+def _create_message(client: WorkspaceClient, args) -> list[TextContent]:
     model = CreateMessageInput.model_validate(args)
     message = client.genie.create_message_and_wait(
         model.space_id, model.conversation_id, model.content
@@ -118,7 +118,7 @@ def _create_message(client, args) -> list[TextContent]:
     ]
 
 
-def _get_message(client, args) -> list[TextContent]:
+def _get_message(client: WorkspaceClient, args) -> list[TextContent]:
     model = GetMessageInput.model_validate(args)
     message = client.genie.get_message(
         model.space_id, model.conversation_id, model.message_id
@@ -141,7 +141,7 @@ def _get_message(client, args) -> list[TextContent]:
     ]
 
 
-def _get_attachment_query_result(client, args) -> list[TextContent]:
+def _get_attachment_query_result(client: WorkspaceClient, args) -> list[TextContent]:
     model = GetAttachmentQueryResultInput.model_validate(args)
     result = client.genie.get_message_attachment_query_result(
         model.space_id, model.conversation_id, model.message_id, model.attachment_id
@@ -158,7 +158,7 @@ def _get_attachment_query_result(client, args) -> list[TextContent]:
     ]
 
 
-def _execute_attachment_query(client, args) -> list[TextContent]:
+def _execute_attachment_query(client: WorkspaceClient, args) -> list[TextContent]:
     model = ExecuteAttachmentQueryInput.model_validate(args)
     result = client.genie.execute_message_attachment_query(
         model.space_id, model.conversation_id, model.message_id, model.attachment_id
@@ -175,7 +175,7 @@ def _execute_attachment_query(client, args) -> list[TextContent]:
     ]
 
 
-def _get_space(client, args) -> list[TextContent]:
+def _get_space(client: WorkspaceClient, args) -> list[TextContent]:
     model = GetSpaceInput.model_validate(args)
     space = client.genie.get_space(model.space_id)
     return [
@@ -192,7 +192,7 @@ def _get_space(client, args) -> list[TextContent]:
     ]
 
 
-def _generate_download_query_result(client, args) -> list[TextContent]:
+def _generate_download_query_result(client: WorkspaceClient, args) -> list[TextContent]:
     model = GenerateDownloadInput.model_validate(args)
     result = client.genie.generate_download_full_query_result(
         model.space_id, model.conversation_id, model.message_id, model.attachment_id

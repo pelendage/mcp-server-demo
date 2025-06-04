@@ -1,27 +1,35 @@
 from fastapi import FastAPI
-from mcp.server import Server
 from databricks.labs.mcp.servers.unity_catalog.cli import get_settings
 
 from databricks.labs.mcp._version import __version__ as VERSION
-from databricks.labs.mcp.servers.unity_catalog.server import get_tools_dict
-from databricks.labs.mcp.servers.unity_catalog.tools.base_tool import BaseTool
 from mcp.server.fastmcp import FastMCP
+from databricks.labs.mcp.servers.unity_catalog.tools import get_tools_dict
+from databricks.labs.mcp.utils import logger
 
-mcp_server = Server(name="mcp-unitycatalog", version=VERSION)
-tools_dict: dict[str, BaseTool] = get_tools_dict(settings=get_settings())
 
-
-mcp = FastMCP(
-    name="mcp-unitycatalog",
-)
-
-for tool_name, tool in tools_dict.items():
-    mcp.add_tool(
-        tool.execute,
-        name=tool_name,
-        description=tool.tool_spec.description,
-        annotations=tool.tool_spec.annotations,
+def get_prepared_mcp_app() -> FastMCP:
+    logger.info(
+        f"Starting MCP Unity Catalog server version {VERSION} with settings: {get_settings()}"
     )
+    mcp = FastMCP(
+        name="mcp-unitycatalog",
+    )
+    tools_dict = get_tools_dict()
+
+    @mcp._mcp_server.list_tools()
+    async def list_tools():
+        return [tool.tool_spec for tool in tools_dict.values()]
+
+    @mcp._mcp_server.call_tool()
+    async def call_tool(name: str, arguments: dict):
+        tool = tools_dict[name]
+        return tool.execute(**arguments)
+
+    logger.info(f"Registered {len(tools_dict)} tools: {', '.join(tools_dict.keys())}")
+    return mcp
+
+
+mcp = get_prepared_mcp_app()
 
 app = FastAPI(
     lifespan=lambda _: mcp.session_manager.run(),

@@ -3,7 +3,6 @@ Collection of base utils for MCP servers.
 """
 
 import contextlib
-import logging
 from collections import deque
 from dataclasses import dataclass
 from typing import AsyncIterator
@@ -12,7 +11,7 @@ from starlette.applications import Starlette
 from starlette.routing import Mount
 from starlette.types import Receive, Scope, Send
 from mcp.server.streamable_http_manager import StreamableHTTPSessionManager
-
+from databricks.labs.mcp.utils import logger
 from mcp.server import Server
 
 from mcp.server.streamable_http import (
@@ -23,8 +22,6 @@ from mcp.server.streamable_http import (
     StreamId,
 )
 from mcp.types import JSONRPCMessage
-
-logger = logging.getLogger(__name__)
 
 
 @dataclass
