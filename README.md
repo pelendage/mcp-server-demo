@@ -10,10 +10,11 @@ Table of Contents
   - [Overview](#overview)
   - [Unity Catalog Server](#unity-catalog-server)
     - [Overview](#overview-1)
-    - [Usage](#usage)
+    - [Usage (locally via `stdio` transport)](#usage-locally-via-stdio-transport)
     - [Supported tools](#supported-tools)
+    - [Deploying UC MCP server on Databricks Apps](#deploying-uc-mcp-server-on-databricks-apps)
+    - [Connecting to the UC MCP server deployed on Databricks Apps](#connecting-to-the-uc-mcp-server-deployed-on-databricks-apps)
   - [Developer Tools Server](#developer-tools-server)
-  - [Deploying MCP servers on Databricks Apps](#deploying-mcp-servers-on-databricks-apps)
   - [Support](#support)
   - [Contributing](#contributing)
 
@@ -38,7 +39,8 @@ A Model Context Protocol server that exposes structured and unstructured data in
 
 <img src="docs/images/demo.png" alt="Demo image" height="400px">
 
-### Usage
+### Usage (locally via `stdio` transport)
+
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 1. Install Python using `uv python install 3.12`
 1. [Configure Databricks credentials](https://docs.databricks.com/aws/en/dev-tools/cli/authentication) with access to the required APIs
@@ -74,11 +76,7 @@ the following tools:
 * **Vector search indexes**: for each vector search index, the server exposes a tool for querying that vector search index
 * **Genie spaces**: for each Genie space, the server exposes tools for managing conversations and sending questions to the space
 
-## Developer Tools Server
-
-This server is currently under construction. It is not yet usable, but contributions are welcome!
-
-## Deploying MCP servers on Databricks Apps
+### Deploying UC MCP server on Databricks Apps
 
 You can deploy the Unity Catalog MCP server as a Databricks app. To do so, follow the instructions below:
 
@@ -120,13 +118,15 @@ If you are a developer iterating on the server implementation, you can repeat st
 
 Please note that both variables should be provided in both `deploy` and `run` commands. The `schema_full_name` variable is used to determine the schema to use for the server, while the `genie_space_ids` variable is used to determine which Genie spaces to use. 
 
+### Connecting to the UC MCP server deployed on Databricks Apps
+
 After the app is deployed, you can connect to it using the `Streamable HTTP` transport in your MCP client, such as Claude Desktop or MCP inspector.
-To do this, you need to set the transport URL to the URL of your app, which should look like this:
+To do this, you need to set the target URL to the URL of your app + `/api/mcp/` postfix. Full URL example:
 ```
 https://your-app-url.usually.ends.with.databricksapps.com/api/mcp/
 ```
 
-Please note that the URL should end with `/api/mcp/` (including the trailing slash), as this is required for the server to work correctly.
+**Please note that the URL should end with `/api/mcp/` (including the trailing slash), as this is required for the server to work correctly.**
 To connect to the app, you also need to set the `Authorization` header to `Bearer <your_token>`, where `<your_token>` is the token you can get by running the following command:
 
 ```bash
@@ -134,6 +134,10 @@ databricks auth token -p your-profile-name
 ```
 
 Please note that app service principal should be entitled with necessary permissions to access the Unity Catalog schema and Genie spaces. You can do this by assigning the appropriate permissions to the service principal in Unity Catalog and Genie.
+
+## Developer Tools Server
+
+This server is currently under construction. It is not yet usable, but contributions are welcome!
 
 ## Support
 Please note that all projects in the `databrickslabs` GitHub organization are provided for your exploration only, and are not formally supported by Databricks with Service Level Agreements (SLAs).  They are provided AS-IS and we do not make any guarantees of any kind.  Please do not submit a support ticket relating to any issues arising from the use of these projects.
