@@ -15,6 +15,7 @@ Table of Contents
     - [Deploying UC MCP server on Databricks Apps](#deploying-uc-mcp-server-on-databricks-apps)
     - [Connecting to the UC MCP server deployed on Databricks Apps](#connecting-to-the-uc-mcp-server-deployed-on-databricks-apps)
   - [Developer Tools Server](#developer-tools-server)
+  - [Deploying a custom MCP server on Databricks Apps](#deploying-a-custom-mcp-server-on-databricks-apps)
   - [Support](#support)
   - [Contributing](#contributing)
 
@@ -138,6 +139,10 @@ Please note that app service principal should be entitled with necessary permiss
 ## Developer Tools Server
 
 This server is currently under construction. It is not yet usable, but contributions are welcome!
+
+## Deploying a custom MCP server on Databricks Apps
+
+If you would like to deploy a custom MCP server on Databricks Apps, take a look at the reference implementation [here](./examples/custom-server/README.md). It provides a step-by-step guide on how to create a custom MCP server and deploy it on Databricks Apps.
 
 ## Support
 Please note that all projects in the `databrickslabs` GitHub organization are provided for your exploration only, and are not formally supported by Databricks with Service Level Agreements (SLAs).  They are provided AS-IS and we do not make any guarantees of any kind.  Please do not submit a support ticket relating to any issues arising from the use of these projects.
