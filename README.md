@@ -13,6 +13,8 @@ Table of Contents
     - [Usage (locally via `stdio` transport)](#usage-locally-via-stdio-transport)
     - [Supported tools](#supported-tools)
     - [Deploying UC MCP server on Databricks Apps](#deploying-uc-mcp-server-on-databricks-apps)
+      - [Using `databricks bundle` CLI](#using-databricks-bundle-cli)
+      - [Using `databricks apps` CLI](#using-databricks-apps-cli)
     - [Connecting to the UC MCP server deployed on Databricks Apps](#connecting-to-the-uc-mcp-server-deployed-on-databricks-apps)
   - [Developer Tools Server](#developer-tools-server)
   - [Deploying a custom MCP server on Databricks Apps](#deploying-a-custom-mcp-server-on-databricks-apps)
@@ -36,6 +38,7 @@ read the [contributor guidelines](CONTRIBUTING.md) to streamline the process and
 ![status: Beta](https://img.shields.io/badge/status-Beta-yellow?style=flat-square&logo=databricks)
 
 ### Overview
+
 A Model Context Protocol server that exposes structured and unstructured data in Unity Catalog ([vector search indexes](https://docs.databricks.com/gcp/en/generative-ai/vector-search), [functions](https://docs.databricks.com/aws/en/generative-ai/agent-framework/create-custom-tool), and [Genie spaces](https://docs.databricks.com/aws/en/genie/)), as tools.
 
 <img src="docs/images/demo.png" alt="Demo image" height="400px">
@@ -87,6 +90,12 @@ cd /path/to/this/repo
 uv build --wheel
 ```
 
+There are two ways to deploy the server on Databricks Apps: using the `databricks bundle` CLI or using the `databricks apps` CLI. Depending on your preference, you can choose either method.
+
+
+#### Using `databricks bundle` CLI
+
+To deploy the server using the `databricks bundle` CLI, follow these steps:
 
 1. Set the env variables for the `schema_full_name` and `genie_space_ids` and run the `bundle deploy` command:
 ```bash
@@ -118,6 +127,34 @@ databricks auth token -p your-profile-name
 If you are a developer iterating on the server implementation, you can repeat steps #2 and #3 to push your latest modifications to the server to your Databricks app.
 
 Please note that both variables should be provided in both `deploy` and `run` commands. The `schema_full_name` variable is used to determine the schema to use for the server, while the `genie_space_ids` variable is used to determine which Genie spaces to use. 
+
+#### Using `databricks apps` CLI
+
+To deploy the server using the `databricks apps` CLI, follow these steps:
+1. Move into the project directory and build the wheel:
+```bash
+cd /path/to/this/repo
+uv build --wheel
+```
+2. Configure the `app.yml` file in the root of the project directory. You can use the following example as a starting point:
+
+```yaml
+command: ["uvicorn", "databricks.labs.mcp.servers.unity_catalog.app:app"]
+env:
+  - name: SCHEMA_FULL_NAME
+    value: catalog.schema
+  - name: GENIE_SPACE_IDS
+    value: '["space1","space2"]'
+```
+
+3. Deploy the app using the `databricks apps` CLI:
+```bash
+uv build --wheel
+databricks sync ./build -p <your-profile-name> /Workspace/Users/my-email@org.com/my-app
+databricks apps deploy my-app-name -p <your-profile-name> --source-code-path /Workspace/Users/my-email@org.com/my-app
+databricks apps start my-app-name -p <your-profile-name>
+```
+
 
 ### Connecting to the UC MCP server deployed on Databricks Apps
 
