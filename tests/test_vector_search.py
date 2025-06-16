@@ -29,7 +29,11 @@ class DummyTablesAPI:
                 self.name = name
 
         class DummyTableInfo:
-            columns = [DummyColumn("col1"), DummyColumn("col2"), DummyColumn("__db_content_vector")]
+            columns = [
+                DummyColumn("col1"),
+                DummyColumn("col2"),
+                DummyColumn("__db_content_vector"),
+            ]
 
         return DummyTableInfo()
 
@@ -41,6 +45,7 @@ class DummyWorkspaceClient:
 
 class DummySettings:
     schema_full_name = "cat.sch"
+    vector_search_num_results = 5
 
 
 @mock.patch(
@@ -59,14 +64,16 @@ def test_list_vector_search_tools_filters_and_returns_expected():
 
 def test_internal_list_vector_search_tools_direct():
     client = DummyWorkspaceClient()
-    tools = _list_vector_search_tools(client, "cat", "sch")
+    tools = _list_vector_search_tools(client, "cat", "sch", vector_search_num_results=5)
     assert len(tools) == 1
     assert isinstance(tools[0], VectorSearchTool)
     assert tools[0].index_name == "cat.sch.tbl1"
     assert tools[0].columns == ["col1", "col2"]
 
 
-@mock.patch("databricks.labs.mcp.servers.unity_catalog.tools.vector_search.VectorSearchClient")
+@mock.patch(
+    "databricks.labs.mcp.servers.unity_catalog.tools.vector_search.VectorSearchClient"
+)
 def test_vector_search_tool_execute(MockVectorSearchClient):
     mock_index = mock.Mock()
     mock_index.similarity_search.return_value = {

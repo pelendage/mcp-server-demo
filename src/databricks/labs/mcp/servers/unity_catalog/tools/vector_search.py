@@ -15,7 +15,14 @@ class QueryInput(BaseModel):
 
 
 class VectorSearchTool(BaseTool):
-    def __init__(self, endpoint_name: str, index_name: str, tool_name: str, columns: list[str], num_results: int = 5):
+    def __init__(
+        self,
+        endpoint_name: str,
+        index_name: str,
+        tool_name: str,
+        columns: list[str],
+        num_results: int = 5,
+    ):
         self.endpoint_name = endpoint_name
         self.index_name = index_name
         self.tool_name = tool_name
@@ -46,17 +53,20 @@ class VectorSearchTool(BaseTool):
         return [TextContent(type="text", text=json.dumps(docs, indent=2))]
 
 
-def get_table_columns(workspace_client: WorkspaceClient, full_table_name: str) -> list[str]:
+def get_table_columns(
+    workspace_client: WorkspaceClient, full_table_name: str
+) -> list[str]:
     table_info = workspace_client.tables.get(full_table_name)
     return [
-        col.name
-        for col in table_info.columns
-        if col.name != CONTENT_VECTOR_COLUMN_NAME
+        col.name for col in table_info.columns if col.name != CONTENT_VECTOR_COLUMN_NAME
     ]
 
 
 def _list_vector_search_tools(
-    workspace_client: WorkspaceClient, catalog_name: str, schema_name: str, vector_search_num_results: int
+    workspace_client: WorkspaceClient,
+    catalog_name: str,
+    schema_name: str,
+    vector_search_num_results: int,
 ) -> list[VectorSearchTool]:
     tools = []
     for table in workspace_client.tables.list(
@@ -71,7 +81,11 @@ def _list_vector_search_tools(
 
         columns = get_table_columns(workspace_client, index_name)
 
-        tools.append(VectorSearchTool(endpoint, index_name, tool_name, columns, vector_search_num_results))
+        tools.append(
+            VectorSearchTool(
+                endpoint, index_name, tool_name, columns, vector_search_num_results
+            )
+        )
 
     return tools
 
@@ -79,4 +93,6 @@ def _list_vector_search_tools(
 def list_vector_search_tools(settings: CliSettings) -> list[VectorSearchTool]:
     workspace_client = WorkspaceClient()
     catalog_name, schema_name = settings.schema_full_name.split(".")
-    return _list_vector_search_tools(workspace_client, catalog_name, schema_name, settings.vector_search_num_results)
+    return _list_vector_search_tools(
+        workspace_client, catalog_name, schema_name, settings.vector_search_num_results
+    )
