@@ -35,7 +35,9 @@ class CliSettings(BaseSettings):
     vector_search_num_results: int = Field(
         default=5,
         description="Number of results to return from vector search queries",
-        validation_alias=AliasChoices("vn", "vector_search_num_results", "vector_num_results"),
+        validation_alias=AliasChoices(
+            "vn", "vector_search_num_results", "vector_num_results"
+        ),
     )
 
     def get_catalog_name(self):
