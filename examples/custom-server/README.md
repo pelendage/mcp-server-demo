@@ -19,7 +19,7 @@ uv sync
 - start the server locally. Changes will trigger a reload:
 
 ```bash
-uvicorn custom-server.app:mcp --reload
+uvicorn custom_server.app:app --reload
 ```
 
 ## Deploying a custom MCP server on Databricks Apps
