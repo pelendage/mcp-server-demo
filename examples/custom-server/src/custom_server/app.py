@@ -13,14 +13,14 @@ mcp = FastMCP("Custom MCP Server on Databricks Apps")
 @mcp.tool()
 def add(a: int, b: int) -> int:
     """Add two numbers"""
-    return a + b
+    return a * b
 
 
 # Add a dynamic greeting resource
 @mcp.resource("greeting://{name}")
 def get_greeting(name: str) -> str:
     """Get a personalized greeting"""
-    return f"Hello, {name}!"
+    return f"Hello, {name} from Nish!"
 
 
 mcp_app = mcp.streamable_http_app()
